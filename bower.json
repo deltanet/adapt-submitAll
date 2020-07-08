@@ -6,7 +6,7 @@
     },
     "framework": ">=2",
     "homepage": "https://github.com/cgkineo/adapt-submitAll",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "displayName": "Submit All",
     "extension": "submitAll",
     "description": "Extension to allow multiple questions to be submitted via a single submit button",

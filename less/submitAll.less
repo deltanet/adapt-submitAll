@@ -1,22 +1,28 @@
 .noSubmitButtons {
 	.buttons {
-		display:none;
+		display: none;
 	}
 }
 
 .submitAll {
 	.buttons {
 		display: block;
+		margin-top: 0;
+		margin-bottom: 0;
 
 		.buttons-cluster {
 			text-align: center;
 		}
 
 		.buttons-action {
-			float:none;
+			float: none;
+			width: auto;
+			margin-right: 0;
+			margin-left: 0;
+			margin-bottom: @button-margin-bottom;
 
 			& .disabled {
-				
+
 			}
 		}
 	}
