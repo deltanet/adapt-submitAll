@@ -4,12 +4,14 @@ define([
 
 	var SubmitAll = Backbone.View.extend({
 
+		className: 'submit-all',
+
 		events: {
-			'click .buttons-action': 'onSubmitAllButtonClicked'
+			'click .js-btn-action': 'onSubmitAllButtonClicked'
 		},
 
 		initialize: function() {
-			this.model.get('_articleView').$el.addClass('noSubmitButtons');
+			this.model.get('_articleView').$el.addClass('no-submit-buttons');
 
 			this.listenTo(Adapt, {
 				'componentView:postRender': this.onComponentViewRendered,
@@ -31,8 +33,6 @@ define([
 				buttonText: submitButtonLabels.buttonText,
 				ariaLabel: submitButtonLabels.ariaLabel
 			}));
-
-			this.$el.addClass('submitAll');
 
 			var $containerDiv = this.getContainerDiv(this.model.get('_articleView').$el, this.model.get('_insertAfterBlock'));
 			$containerDiv.after(this.$el);
@@ -56,13 +56,13 @@ define([
 		},
 
 		enableSubmitAllButton: function(enable) {
-			var $submitAllButton = this.$el.find('.buttons-action');
+			var $submitAllButton = this.$el.find('.js-btn-action');
 			if (enable) {
-				$submitAllButton.removeClass('disabled').attr('disabled', false);
+				$submitAllButton.removeClass('is-disabled').attr('disabled', false);
 				return;
 			}
 
-			$submitAllButton.addClass('disabled').attr('disabled', true);
+			$submitAllButton.addClass('is-disabled').attr('disabled', true);
 		},
 
 		/**
@@ -80,10 +80,10 @@ define([
 		removeEventListeners: function() {
 			this.model.get('_componentViews').forEach(function(view) {
 				if (view.model.get('_component') === 'textinput') {
-					view.$el.find('input').off('change.submitAll');
+					view.$el.find('input').off('change.submit-all');
 					return;
 				}
-				view.$el.off('click.submitAll');
+				view.$el.off('click.submit-all');
 			});
 		},
 
@@ -95,17 +95,17 @@ define([
 		 * @param {Backbone.View} view
 		*/
 		onComponentViewRendered: function(view) {
-			if (!view.$el.hasClass('question-component')) return;
+			if (!view.$el.hasClass('is-question')) return;
 
 			var parentArticleId = view.model.findAncestor('articles').get('_id');
 			var submitAllArticleId = this.model.get('_articleView').model.get('_id');
 			if (parentArticleId === submitAllArticleId) {
 				this.model.get('_componentViews').push(view);
 				if (view.model.get('_component') === 'textinput') {
-					view.$el.find('input').on('change.submitAll', this.onInteraction);
+					view.$el.find('input').on('change.submit-all', this.onInteraction);
 					return;
 				}
-				view.$el.on('click.submitAll', this.onInteraction);
+				view.$el.on('click.submit-all', this.onInteraction);
 			}
 		},
 
@@ -122,7 +122,7 @@ define([
 
 		onSubmitAllButtonClicked: function() {
 			this.model.get('_componentViews').forEach(function(view) {
-				$('.buttons-action', view.$el).trigger('click');
+				view.$el.find('.js-btn-action').trigger('click');
 			});
 
 			this.enableSubmitAllButton(false);
